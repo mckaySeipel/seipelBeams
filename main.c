@@ -1,20 +1,20 @@
 #include <stdio.h>
 
 
-#include "src/Queue/queue.h"
-#include "src/Filter/filter.h"
-#include "src/Filter/filterTest.h"
-#include "src/Filter/transmitter.h"
-#include "Filter/isr.h"
-#include "supportFiles/interrupts.h"
-#include "src/switchesAndButtonsLab/buttons.h"
-#include "src/Filter/trigger.h"
-#include "src/Filter/hitLedTimer.h"
-#include "src/Filter/lockOutTimer.h"
+#include "queue.h"
+#include "filter.h"
+//#include "filterTest.h" removed 3/5/18 swr
+#include "transmitter.h"
+#include "isr.h"
+//#include "supportFiles/interrupts.h"
+//#include "buttons.h"	removed 3/5/18 swr
+#include "trigger.h"
+#include "hitLedTimer.h"
+#include "lockOutTimer.h"
 
 #define BUTTON_3  0x08 // 0000 1000
-#include "src/Filter/detector.h"
-#include "src/Filter/runningModes.h"
+#include "detector.h"
+#include "runningModes.h"
 #include <assert.h>
 
 #define BUTTONS_BTN2_MASK 0x4   // Bit mask for BTN2
@@ -33,12 +33,16 @@ int main() {
     transmitter_init();
     trigger_init();
     detector_runTest();
-  buttons_init();  // Init the buttons.
+  //buttons_init();  // Init the buttons.	removed 3/5/18 swr
+  //removed 3/5/18 swr
+    /**
     if (buttons_read() & BUTTONS_BTN2_MASK) // Read the buttons to see if BTN2 is drepressed.
      {
         runningModes_shooter();
      }// Run shooter mode if BTN2 is depressed.
     else
+      runningModes_continuous();            // Otherwise, go to continuous mode.
+      */
       runningModes_continuous();            // Otherwise, go to continuous mode.
 }
 

@@ -4,12 +4,12 @@
 #include <stdio.h>
 #include "transmitter.h"
 //removed 2/26/18
-#include "supportFiles/mio.h"
+//#include "supportFiles/mio.h"
 #include "filter.h"
-#include "switches.h"
-#include "buttons.h"
+//#include "switches.h"	removed 3/5/18 swr
+//#include "buttons.h"	removed 3/5/18 swr
 //removed 2/26/18
-#include "supportFiles/utils.h"
+//#include "supportFiles/utils.h"
 
 #define TRASMITTER_ONE_PERIOD 300
 
@@ -78,11 +78,11 @@ enum transmitter_st_t {
 } currentStateTrans = init_st;
 
 void transmitter_set_jf1_to_one() {
-  mio_writePin(TRANSMITTER_OUTPUT_PIN, TRANSMITTER_HIGH_VALUE); // Write a '1' to JF-1.
+  //mio_writePin(TRANSMITTER_OUTPUT_PIN, TRANSMITTER_HIGH_VALUE); // Write a '1' to JF-1.	removed 3/5/18 swr
 }
 
 void transmitter_set_jf1_to_zero() {
-  mio_writePin(TRANSMITTER_OUTPUT_PIN, TRANSMITTER_LOW_VALUE); // Write a '0' to JF-1.
+  //mio_writePin(TRANSMITTER_OUTPUT_PIN, TRANSMITTER_LOW_VALUE); // Write a '0' to JF-1.	removed 3/5/18 swr
 }
 
 // The transmitter state machine generates a square wave output at the chosen frequency
@@ -103,9 +103,9 @@ void transmitter_init()
      //set to zero
      currentPlayer = 0;
      //initialize the pins
-     mio_init(false);
+     //mio_init(false);								removed 3/5/18 swr
      //set the pins
-     mio_setPinAsOutput(TRANSMITTER_OUTPUT_PIN);
+     //mio_setPinAsOutput(TRANSMITTER_OUTPUT_PIN);	removed 3/5/18 swr
 }
 
 // Starts the transmitter.
@@ -220,8 +220,8 @@ void transmitter_tick()
            break;
        }
 }
-
-
+//removed 3/5/18 swr
+/**
 // Tests the transmitter.
 void transmitter_runTest()
 {
@@ -369,7 +369,7 @@ void transmitter_runTest()
        }
 }
 
-
+*/
 // Runs the transmitter continuously.
 // if continuousModeFlag == true, transmitter runs continuously, otherwise, transmits one pulse-width and stops.
 // To set continuous mode, you must invoke this function prior to calling transmitter_run().

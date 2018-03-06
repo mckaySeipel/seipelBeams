@@ -84,7 +84,8 @@ uint32_t isr_adcBufferElementCount() {
 }
 
 void isr_function() {
-    uint32_t adcData = interrupts_getAdcData();
+    //uint32_t adcData = interrupts_getAdcData();     removed 3/5/18 swr
+    uint32_t adcData = 0;
     isr_addDataToAdcBuffer(adcData);
     transmitter_tick();
     trigger_tick();

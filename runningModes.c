@@ -20,8 +20,8 @@
 #include "detector.h"
 #include "transmitter.h"
 #include <stdlib.h>
-#include "buttons.h"
-#include "switches.h"
+//#include "buttons.h"	removed 3/5/18 swr
+//#include "switches.h" removed 3/5/18 swr
 #include "isr.h"
 //Removed 2/26/18
 //#include "supportFiles/mio.h"
@@ -66,7 +66,9 @@ static uint32_t detectorInvocationCount = 0;  // Keep track of detector invocati
 // interval_timer(1) is the total run-time,
 // interval_timer(2) is the time spent in main running the filters, updating the display, and so forth.
 // No comments in the code, the print statements are self-explanatory.
-void runningModes_printRunTimeStatistics() {
+//removed 3/5/18 swr
+/**
+  void runningModes_printRunTimeStatistics() {
   display_setTextSize(1);
   display_setTextColor(DISPLAY_WHITE);
   display_setCursor(0, 0);
@@ -93,16 +95,17 @@ void runningModes_printRunTimeStatistics() {
   display_print((((double) detectorInvocationCount) / ((double) interruptCount)) * PERCENTAGE_MULTIPLIER);
   display_print("%");
 }
+* */
 
 // Group all of the inits together to reduce visual clutter.
 void runningModes_initAll() {
-  buttons_init();
-  switches_init();
-  mio_init(false);
-  display_init();
+  //buttons_init();	removed 3/5/18 swr
+  //switches_init();	removed 3/5/18 swr
+  //mio_init(false); removed 3/5/18 swr
+  //display_init(); //removed 3/5/18 swr
   intervalTimer_initAll();
-  histogram_init(HISTOGRAM_BAR_COUNT);
-  leds_init(true);
+  //histogram_init(HISTOGRAM_BAR_COUNT); removed 3/5/18 swr
+  //leds_init(true);	removed 3/5/18 swr
   transmitter_init();
   detector_init();
   filter_init();
@@ -113,7 +116,8 @@ void runningModes_initAll() {
 
 // Returns the current switch-setting
 uint16_t runningModes_getFrequencySetting() {
-  uint16_t switchSetting = switches_read() & 0xF;  // Bit-mask the results.
+  //uint16_t switchSetting = switches_read() & 0xF;  // Bit-mask the results. removed 3/5/18 swr
+  uint16_t switchSetting =  0xF;  // Dummy variable to replace above logic removed 3/5/18 swr
   // Provide a nice default if the slide switches are in error.
   if (!(switchSetting < FILTER_FREQUENCY_COUNT))
     return FILTER_FREQUENCY_COUNT - 1;
@@ -127,19 +131,20 @@ uint16_t runningModes_getFrequencySetting() {
 void runningModes_continuous() {
   runningModes_initAll();  // All necessary inits are called here.
   // Prints an error message if an internal failure occurs because the argument = true.
-  interrupts_initAll(true);                   // Init all interrupts (but does not enable the interrupts at the devices).
-  interrupts_enableTimerGlobalInts();		      // Allows the timer to generate interrupts.
-  interrupts_startArmPrivateTimer();		      // Start the private ARM timer running.
+  //interrupts_initAll(true);                   // Init all interrupts (but does not enable the interrupts at the devices). removed 3/5/18 swr
+  //interrupts_enableTimerGlobalInts();		      // Allows the timer to generate interrupts. 								removed 3/5/18 swr
+  //interrupts_startArmPrivateTimer();		      // Start the private ARM timer running. 									removed 3/5/18 swr
   uint16_t histogramSystemTicks = 0;          // Only update the histogram display every so many ticks.
   intervalTimer_reset(ISR_CUMULATIVE_TIMER);  // Used to measure ISR execution time.
   intervalTimer_reset(TOTAL_RUNTIME_TIMER);   // Used to measure total program execution time.
   intervalTimer_reset(MAIN_CUMULATIVE_TIMER); // Used to measure main-loop execution time.
   intervalTimer_start(TOTAL_RUNTIME_TIMER);   // Start measuring total execution time.
   transmitter_setContinuousMode(true);        // Run the transmitter continuously.
-  interrupts_enableArmInts();                 // The ARM will start seeing interrupts after this.
+  //interrupts_enableArmInts();                 // The ARM will start seeing interrupts after this.							removed 3/5/18 swr
   transmitter_run();                          // Start the transmitter.
   detectorInvocationCount = 0;                // Keep track of detector invocations.
-  while (!(buttons_read() & BUTTONS_BTN3_MASK)) {	// Run until you detect btn3 pressed.
+  //while (!(buttons_read() & BUTTONS_BTN3_MASK)) {	// Run until you detect btn3 pressed.	removed 3/5/18 swr
+  while (true) {	// removed dummy logic to replace above line
     transmitter_setFrequencyNumber(runningModes_getFrequencySetting());
     detectorInvocationCount++; // Used for run-time statistics.
     histogramSystemTicks++;    // Keep track of ticks so you know when to update the histogram.
@@ -155,12 +160,12 @@ void runningModes_continuous() {
     if (histogramSystemTicks >= SYSTEM_TICKS_PER_HISTOGRAM_UPDATE) {
       double powerValues[FILTER_FREQUENCY_COUNT];    // Copy the current power values to here.
       filter_getCurrentPowerValues(powerValues);     // Copy the current power values.
-      histogram_plotUserFrequencyPower(powerValues); // Plot the power values on the TFT.
+      //histogram_plotUserFrequencyPower(powerValues); // Plot the power values on the TFT.									removed 3/5/18 swr
       histogramSystemTicks = 0;		                   // Reset the tick count and wait for the next update time.
     }
   }
-  interrupts_disableArmInts();            // Stop interrupts.
-  runningModes_printRunTimeStatistics();  // Print the run-time statistics.
+  //interrupts_disableArmInts();            // Stop interrupts.																removed 3/5/18 swr
+  //runningModes_printRunTimeStatistics();  // Print the run-time statistics.												removed 3/5/18 swr
 }
 
 // Game-playing mode. Each shot is registered on the histogram on the TFT.
@@ -169,23 +174,26 @@ void runningModes_shooter() {
   uint16_t hitCount = 0;
   detectorInvocationCount = 0;                // Keep track of detector invocations.
   runningModes_initAll();
-  trigger_enable();	// Makes the trigger state machine responsive to the trigger.
-  interrupts_initAll(true);             // Inits all interrupts but does not enable them.
-  interrupts_enableTimerGlobalInts();		// Allows the timer to generate interrupts.
-  interrupts_startArmPrivateTimer();		// Start the private ARM timer running.
+  trigger_enable();	// Makes the trigger state machine responsive to the trigger.				
+  //interrupts_initAll(true);             // Inits all interrupts but does not enable them.									removed 3/5/18 swr
+  //interrupts_enableTimerGlobalInts();		// Allows the timer to generate interrupts.										removed 3/5/18 swr
+  //interrupts_startArmPrivateTimer();		// Start the private ARM timer running.											removed 3/5/18 swr
   uint16_t histogramSystemTicks = 0;		// Only update the histogram display every so many ticks.
   intervalTimer_reset(ISR_CUMULATIVE_TIMER);  // Used to measure ISR execution time.
   intervalTimer_reset(TOTAL_RUNTIME_TIMER);   // Used to measure total program execution time.
   intervalTimer_reset(MAIN_CUMULATIVE_TIMER); // Used to measure main-loop execution time.
   intervalTimer_start(TOTAL_RUNTIME_TIMER);   // Start measuring total execution time.
-  interrupts_enableArmInts();		// The ARM will start seeing interrupts after this.
+  //interrupts_enableArmInts();		// The ARM will start seeing interrupts after this.										removed 3/5/18 swr
   lockoutTimer_start();					// Ignore erroneous hits at startup (when all power values are essentially 0).
-  while ((!(buttons_read() & BUTTONS_BTN3_MASK)) && hitCount < MAX_HIT_COUNT) {	// Run until you detect btn3 pressed.
-    if (interrupts_isrFlagGlobal) {  // Only do something if an interrupt has occurred.
+  //while ((!(buttons_read() & BUTTONS_BTN3_MASK)) && hitCount < MAX_HIT_COUNT) {	// Run until you detect btn3 pressed.	removed 3/5/18 swr
+  while (true) {	// removed dummy logic to replace line above
+    //if (interrupts_isrFlagGlobal) {  // Only do something if an interrupt has occurred.									removed 3/5/18 swr
+	//removed dummy value to replace the above logic 3/5/18 swr
+	if(true){ 
       intervalTimer_start(MAIN_CUMULATIVE_TIMER);  // Measure run-time when you are doing something.
       histogramSystemTicks++;	// Keep track of ticks so you know when to update the histogram.
       countInterruptsViaInterruptsIsrFlag++;	// Keep track of the interrupt-count based on the global flag.
-      interrupts_isrFlagGlobal = 0;		// Reset the global flag.
+      //interrupts_isrFlagGlobal = 0;		// Reset the global flag.														removed 3/5/18 swr
       // Run filters, compute power, run hit-detection.
       detectorInvocationCount++; // Used for run-time statistics.
       detector(true, false);	// true, false means: interrupts are enabled, do not ignore your set frequency.
@@ -195,15 +203,16 @@ void runningModes_shooter() {
         detector_clearHit();  // Clear the hit.
         detector_hitCount_t hitCounts[DETECTOR_HIT_ARRAY_SIZE];	// Store the hit-counts here.
         detector_getHitCounts(hitCounts);  // Get the current hit counts.
-        histogram_plotUserHits(hitCounts); // Plot the hit counts on the TFT.
+        //histogram_plotUserHits(hitCounts); // Plot the hit counts on the TFT.												removed 3/5/18 swr
       }
-      uint16_t switchValue = switches_read();	// Read the switches and switch frequency as required.
+      //uint16_t switchValue = switches_read();	// Read the switches and switch frequency as required.						removed 3/5/18 swr
+      uint16_t switchValue = 1;	// removed dummy logic to replace line above
       transmitter_setFrequencyNumber(switchValue);
     }
     intervalTimer_stop(MAIN_CUMULATIVE_TIMER);  // All done with actual processing.
   }
-  interrupts_disableArmInts();	// Done with loop, disable the interrupts.
+  //interrupts_disableArmInts();	// Done with loop, disable the interrupts.												removed 3/5/18 swr
   hitLedTimer_turnLedOff();     // Save power :-)
-  runningModes_printRunTimeStatistics();  // Print the run-time statistics to the TFT.
+  //runningModes_printRunTimeStatistics();  // Print the run-time statistics to the TFT.									removed 3/5/18 swr
   printf("Shooter mode terminated after detecting %d shots.\n\r", MAX_HIT_COUNT);
 }

@@ -13,8 +13,8 @@
 
 // my include statements
 //removed 2/26/18
-#include/ "xil_io.h"
-#include "xparameters.h"
+// #include "xil_io.h"
+//#include "xparameters.h"	removed 3/5/18 swr
 #include <stdio.h>
 #include <stdint.h>
 //generated with the class

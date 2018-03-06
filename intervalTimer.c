@@ -5,10 +5,11 @@
  *      Author: seipelm
  */
 
+// Change whole file. Logic is sound. removed
 
 //includes the associated header file
 #include "intervalTimer.h"
-
+/**
 /////////////////////////SET / CLEAR BIT VALUES/////////////////////////////
 
 #define INTERVAL_TIMER_CASC_SET_VALUE  0x0800
@@ -239,7 +240,33 @@ uint32_t intervalTimer_testAll() {
 }
 
 #define DELAY_COUNT 3
-// helper function that waits for about 2 minutes
+// helper function that waits //starts timers
+uint32_t intervalTimer_start(uint32_t timerNumber);
+//stops timers
+uint32_t intervalTimer_stop(uint32_t timerNumber);
+//resets timers
+uint32_t intervalTimer_reset(uint32_t timerNumber);
+// initializes timers
+uint32_t intervalTimer_init(uint32_t timerNumber);
+// initializes all timers
+uint32_t intervalTimer_initAll();
+// resets all timers
+uint32_t intervalTimer_resetAll();
+//test all timers
+uint32_t intervalTimer_testAll();
+// test timers
+uint32_t intervalTimer_runTest(uint32_t timerNumber);
+//gets totla value of timers in seconds
+uint32_t intervalTimer_getTotalDurationInSeconds(uint32_t timerNumber, double *seconds);
+//reads address of timers
+uint32_t intervalTimer_readAddress(int timer, uint32_t registerOffset);
+// sets bits in timer registers
+void intervalTimer_setBit(int32_t bitValue, uint32_t address);
+// clears bits in timer registers
+void intervalTimer_clearBit(int32_t bitValue, uint32_t address);
+//loops doing nothing for about 2 minutes
+void waitALongTime();
+for about 2 minutes
 void waitALongTime() {
     volatile int32_t a = 0;
     int32_t i, j;
@@ -513,3 +540,40 @@ void intervalTimer_clearBit(int32_t bitValue, uint32_t address) {
     //write the new value to the address
     Xil_Out32(address, newValue);
 }
+*/
+//starts timers
+uint32_t intervalTimer_start(uint32_t timerNumber)
+{return 0;}
+//stops timers
+uint32_t intervalTimer_stop(uint32_t timerNumber)
+{return 0;}
+//resets timers
+uint32_t intervalTimer_reset(uint32_t timerNumber)
+{return 0;}
+// initializes timers
+uint32_t intervalTimer_init(uint32_t timerNumber)
+{return 0;}
+// initializes all timers
+uint32_t intervalTimer_initAll()
+{return 0;}
+// resets all timers
+uint32_t intervalTimer_resetAll()
+{return 0;}
+//test all timers
+uint32_t intervalTimer_testAll()
+{return 0;}
+// test timers
+uint32_t intervalTimer_runTest(uint32_t timerNumber)
+{return 0;}
+//gets totla value of timers in seconds
+uint32_t intervalTimer_getTotalDurationInSeconds(uint32_t timerNumber, double *seconds)
+{return 0;}
+//reads address of timers
+uint32_t intervalTimer_readAddress(int timer, uint32_t registerOffset)
+{return 0;}
+// sets bits in timer registers
+void intervalTimer_setBit(int32_t bitValue, uint32_t address){}
+// clears bits in timer registers
+void intervalTimer_clearBit(int32_t bitValue, uint32_t address){}
+//loops doing nothing for about 2 minutes
+void waitALongTime(){}

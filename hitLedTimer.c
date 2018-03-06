@@ -6,12 +6,12 @@
  */
 
 #include "hitLedTimer.h"
-#include "supportFiles/leds.h"
-#include "supportFiles/mio.h"
-#include "supportFiles/utils.h"
-#include "buttons.h"
+//#include "supportFiles/leds.h"	removed 3/5/18 swr
+//#include "supportFiles/mio.h"		removed 3/5/18 swr
+//#include "supportFiles/utils.h"	removed 3/5/18 swr
+//#include "buttons.h"				removed 3/5/18 swr
 #include <stdio.h>
-
+#include <stdint.h>
 
 //led values
 #define LED_HIGH_VALUE 1
@@ -43,12 +43,12 @@ void hitLetTimer_init()
 {
     //set default values
     timerStartFlag = false;
-    leds_init(false);
+    //leds_init(false);		removed 3/5/18 swr
 
     //initialize the pins
-    mio_init(false);
+    //mio_init(false);    removed 3/5/18 swr "gpio"
     //set the pins
-    mio_setPinAsOutput(HIT_LED_TIMER_OUTPUT_PIN);
+    //mio_setPinAsOutput(HIT_LED_TIMER_OUTPUT_PIN);    removed 3/5/18 swr
 }
 
 // Calling this starts the timer.
@@ -126,9 +126,9 @@ void hitLedTimer_tick()
 void hitLedTimer_turnLedOn()
 {
     //access the LED and put a voltage to it
-    leds_write(LED_0);
+    //leds_write(LED_0);				removed 3/5/18 swr
     //should illuminate led 1
-    mio_writePin(HIT_LED_TIMER_OUTPUT_PIN, LED_HIGH_VALUE); // Write a '1' to JF-11.
+    //mio_writePin(HIT_LED_TIMER_OUTPUT_PIN, LED_HIGH_VALUE); // Write a '1' to JF-11.     removed 3/5/18 swr
 
 
 }
@@ -136,13 +136,14 @@ void hitLedTimer_turnLedOn()
 void hitLedTimer_turnLedOff()
 {
     //access the LED and put a voltage to it
-    leds_write(LED_RESET);
+    //leds_write(LED_RESET);	removed 3/5/18 swr
     //should illuminate led 1
-    mio_writePin(HIT_LED_TIMER_OUTPUT_PIN, LED_LOW_VALUE); // Write a '0' to JF-11.
+    //mio_writePin(HIT_LED_TIMER_OUTPUT_PIN, LED_LOW_VALUE); // Write a '0' to JF-11.    removed 3/5/18 swr
 
 
 }
-
+//removed 3/5/18 swr
+/**
  void hitLedTimer_runTest()
  {
      //never let it stop
@@ -162,3 +163,4 @@ void hitLedTimer_turnLedOff()
 
      }
  }
+*/

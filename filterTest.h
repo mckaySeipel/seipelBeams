@@ -25,7 +25,7 @@
 #include "detector.h"
 #include "isr.h"
 #endif
-#include "histogram.h"
+//#include "histogram.h"
 #include "supportFiles/utils.h"
 #include <stdio.h>
 #include <math.h>

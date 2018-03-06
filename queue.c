@@ -184,6 +184,7 @@ int16_t myTest()
         }
         //should print 6, 7, 8, 9
         queue_print(&myQueue);
+        return 0;
 }
 
 

@@ -8,10 +8,9 @@
 #include "detector.h"
 #include "filter.h"
 #include "isr.h"
-#include "supportFiles/interrupts.h"
+//#include "supportFiles/interrupts.h"
 #include "lockOutTimer.h"
 #include "hitLedTimer.h"
-
 #include <stdio.h>
 
 #define DETECTOR_DECIMATION_LENGTH 10
@@ -93,11 +92,11 @@ void detector(bool interruptsNotEnabled, bool ignoreSelf) {
         uint32_t rawAdcValue = 0;
         if (interruptsNotEnabled == false) {
             //disable intterupts
-            interrupts_disableArmInts();
+            //interrupts_disableArmInts();  removed 3/5/18 swr 
             //pop from isr queue
             rawAdcValue = isr_removeDataFromAdcBuffer();
             //enable the intterupts again
-            interrupts_enableArmInts();
+            //interrupts_enableArmInts();   removed 3/5/18 swr
         } else {
             rawAdcValue = isr_removeDataFromAdcBuffer();
         }

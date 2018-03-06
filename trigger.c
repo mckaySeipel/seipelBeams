@@ -6,13 +6,13 @@
  */
 
 
-#include "buttons.h"
+//#include "buttons.h"	removed 3/5/18 swr
 #include <stdint.h>
 #include <stdio.h>
 #include "trigger.h"
 
 //Removed 2/26/18
-#include "supportFiles/mio.h"
+//#include "supportFiles/mio.h"
 #include "transmitter.h"
 
 //necessary PIN info
@@ -54,9 +54,9 @@ enum trigger_st_t {
 void trigger_init()
 {
     //so we can talk to the pins
-    mio_init(false);
+    //mio_init(false);									removed 3/5/18 swr
     //set the pins
-    mio_setPinAsInput(TRIGGER_GUN_TRIGGER_MIO_PIN);
+    //mio_setPinAsInput(TRIGGER_GUN_TRIGGER_MIO_PIN);	removed 3/5/18 swr
     //stop ignoring the trigger
     trigger_enable();
 }
@@ -76,8 +76,10 @@ void trigger_enable()
 // Trigger can be activated by either btn0 or the external gun that is attached to TRIGGER_GUN_TRIGGER_MIO_PIN
 // Gun input is ignored if the gun-input is high when the init() function is invoked.
 bool triggerPressed() {
-    return ((!ignoreGunInput & (mio_readPin(TRIGGER_GUN_TRIGGER_MIO_PIN) == GUN_TRIGGER_PRESSED)) ||
-                (buttons_read() & TRIGGER_BUTTON_0_MASK));
+   // removed 3/5/18 swr
+   // return ((!ignoreGunInput & (mio_readPin(TRIGGER_GUN_TRIGGER_MIO_PIN) == GUN_TRIGGER_PRESSED)) ||
+   //             (buttons_read() & TRIGGER_BUTTON_0_MASK));
+   return false; // dummy return to replace logic above
 }
 
 
