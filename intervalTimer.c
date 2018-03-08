@@ -541,39 +541,166 @@ void intervalTimer_clearBit(int32_t bitValue, uint32_t address) {
     Xil_Out32(address, newValue);
 }
 */
+
+unsigned timer_0;
+unsigned timer_1;
+unsigned timer_2;
+unsigned timer_3;
+
+//helper function that reads the system tick
+static inline unsigned ccnt_read(void)
+{
+	unsigned cc;
+	asm volatile ("mrc p15, 0, %0, c15, c12, 1" : "=r" (cc));
+	return cc;
+}
+
+
 //starts timers
 uint32_t intervalTimer_start(uint32_t timerNumber)
-{return 0;}
+{
+	unsigned startTime = ccnt_read();
+	switch (timerNumber)
+	{
+	case 0:
+		timer_0 = startTime;
+		break;
+	case 1:
+		timer_1 = startTime;
+		break;
+	case 2:
+		timer_2 = startTime;
+		break;
+	case 3:
+		timer_3 = startTime;
+		break;
+	default:
+		//something bad has happened report
+		printf("A faulty timer has been called \n");
+		break;
+	}
+
+}
 //stops timers
 uint32_t intervalTimer_stop(uint32_t timerNumber)
-{return 0;}
+{
+	//deprecated with the move to the pi???????? we'll have to see what calls this
+	return 0;
+}
 //resets timers
 uint32_t intervalTimer_reset(uint32_t timerNumber)
-{return 0;}
+{
+	intervalTimer_init(i);
+}
 // initializes timers
 uint32_t intervalTimer_init(uint32_t timerNumber)
-{return 0;}
+{
+	switch (timerNumber)
+	{
+	case 0:
+		timer_0 = 0;
+		break;
+	case 1:
+		timer_1 = 0;
+		break;
+	case 2:
+		timer_2 = 0;
+		break;
+	case 3:
+		timer_3 = 0;
+		break;
+	default:
+		//something bad has happened report
+		printf("A faulty timer has been called \n");
+		break;
+	}
+	return 0;
+}
 // initializes all timers
 uint32_t intervalTimer_initAll()
-{return 0;}
+{
+	//give access to lower level processes
+	asm volatile ("mcr p15,  0, %0, c15,  c9, 0\n" : : "r" (1));
+	uint_8 i;
+	for (i = 0; i < 4; i++)
+	{
+		intervalTimer_init(i);
+	}
+	return 0;
+}
 // resets all timers
 uint32_t intervalTimer_resetAll()
-{return 0;}
+{
+	uint_8 i;
+	for (i = 0; i < 4; i++)
+	{
+		intervalTimer_init(i);
+	}
+}
 //test all timers
 uint32_t intervalTimer_testAll()
-{return 0;}
+{]
+return 0;}
 // test timers
 uint32_t intervalTimer_runTest(uint32_t timerNumber)
-{return 0;}
+{
+	intervalTimer_init(timerNumber);
+	intervalTimer_start(timerNumber);
+	sleep(1);
+	intervalTimer_start(timerNumber);
+	double seconds;
+	intervalTimer_getTotalDurationInSeconds(timerNumber, &seconds);
+
+	return 0;
+}
 //gets totla value of timers in seconds
 uint32_t intervalTimer_getTotalDurationInSeconds(uint32_t timerNumber, double *seconds)
-{return 0;}
+{
+	unsigned timerVal = 0;
+	//get the timer
+	switch (timerNumber)
+	{
+	case 0:
+		timerVal = timer_0;
+		break;
+	case 1:
+		timerVal = timer_1;
+		break;
+	case 2:
+		timerVal = timer_2;
+		break;
+	case 3:
+		timerVal = timer_3;
+		break;
+	default:
+		//something bad has happened report
+		printf("A faulty timer has been called \n");
+		break;
+	}
+	//compare to current time
+	unsigned endTime = ccnt_read();
+	unsigned elapsed_tick_time = endTime - timerVal;
+	printf("the number of ticks elapsed: %u\n")
+		double timeInSeconds = (double)elapsed_tick_time / 1200000000;
+	printf("the time elapsed in seconds: %d\n");
+	return 0;
+}
 //reads address of timers
 uint32_t intervalTimer_readAddress(int timer, uint32_t registerOffset)
-{return 0;}
+{
+	//shouldn't have to do anything with the move to the pi
+	return 0;
+}
 // sets bits in timer registers
-void intervalTimer_setBit(int32_t bitValue, uint32_t address){}
+void intervalTimer_setBit(int32_t bitValue, uint32_t address){
+	//shouldn't have to do anything with the move to the pi
+
+}
 // clears bits in timer registers
-void intervalTimer_clearBit(int32_t bitValue, uint32_t address){}
+void intervalTimer_clearBit(int32_t bitValue, uint32_t address){
+//shouldn't have to do anything with the move to the pi
+}
 //loops doing nothing for about 2 minutes
-void waitALongTime(){}
+void waitALongTime(){
+	//shouldn't have to do anything with the move to the pi
+}
